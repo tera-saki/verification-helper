@@ -98,6 +98,12 @@ def push_timestamp_to_branch() -> None:
     subprocess.check_call(['git', 'config', '--global', 'user.name', 'GitHub'])
     subprocess.check_call(['git', 'config', '--global', 'user.email', 'noreply@github.com'])
     path = onlinejudge_verify.marker.get_verification_marker().json_path
+    logger.info('$ git stash && git pull')
+    subprocess.check_call(['git', 'stash'])
+    subprocess.check_call(['git', 'pull'])
+    logger.info('$ git stash pop && git checkout --theirs .')
+    subprocess.run(['git', 'stash', 'pop'], check=False)
+    subprocess.check_call(['git', 'checkout', '--theirs', '.'])
     logger.info('$ git add %s && git commit && git push', str(path))
     if path.exists():
         subprocess.check_call(['git', 'add', str(path)])
